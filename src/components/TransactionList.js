@@ -2,36 +2,37 @@ import React from "react";
 import { useGlobal } from "../contexts/GlobalState";
 
 const TransactionList = () => {
-  const { exp, dtlHandler } = useGlobal();
-  console.log(exp.his);
+  const { state, dispatch } = useGlobal();
 
-  const list = exp.his.map((el) => {
-    let amt = el.amount,
-      isNeg = false;
-
-    if (el.amount < 0) {
-      amt = el.amount * -1;
-      isNeg = true;
-    }
+  const lst = state.map((el) => {
+    const val = +el.amt;
 
     return (
-      <li className={isNeg ? "minus" : "plus"} key={el.id}>
-        {el.text}{" "}
+      <li className={val < 0 ? "minus" : "plus"}>
+        {el.txt}
         <span>
-          {isNeg && "-"}${amt}
+          {val < 0 ? "-" : ""}${Math.abs(el.amt)}
         </span>
-        <button onClick={() => dtlHandler(el.id)} className="delete-btn">
+        <button onClick={() => clickHandler(el.id)} className="delete-btn">
           x
         </button>
       </li>
     );
   });
 
+  const clickHandler = (id) => {
+    const act = {
+      id: id,
+      type: "del",
+    };
+    dispatch(act);
+  };
+
   return (
     <>
       <h3>History</h3>
       <ul id="list" className="list">
-        {list}
+        {lst}
       </ul>
     </>
   );

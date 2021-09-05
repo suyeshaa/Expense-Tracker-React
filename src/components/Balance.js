@@ -2,12 +2,16 @@ import React from "react";
 import { useGlobal } from "../contexts/GlobalState";
 
 const Balance = () => {
-  const { exp } = useGlobal();
+  const { state } = useGlobal();
+  let tot = 0;
+
+  state.map((el) => (tot += +el.amt));
+
   return (
     <>
       <h4>Your Balance</h4>
       <h1 id="balance">
-        {exp.bal < 0 && "-"}${exp.bal < 0 ? exp.bal * -1 : exp.bal}
+        {tot < 0 && "-"}${Math.abs(tot)}
       </h1>
     </>
   );

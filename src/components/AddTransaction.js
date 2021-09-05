@@ -4,11 +4,20 @@ import { useGlobal } from "../contexts/GlobalState";
 const AddTransaction = () => {
   const [text, setText] = useState("");
   const [amount, setAmount] = useState("");
-  const { data } = useGlobal();
+  const { dispatch } = useGlobal();
 
   const clickHandler = (e) => {
     e.preventDefault();
-    data(amount, text);
+    const act = {
+      type: "add",
+      payload: {
+        id: Math.random(),
+        txt: text,
+        amt: amount,
+      },
+    };
+
+    dispatch(act);
 
     setText("");
     setAmount("");
